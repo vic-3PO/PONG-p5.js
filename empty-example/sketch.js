@@ -13,7 +13,16 @@ let yRaquete = 150;
 let raqueteComprimento = 10;
 let raqueteAltura = 90;
 
+//variáveis do oponente
+let xRaqueteOponente = 585;
+let yRaqueteOponente = 150;
+let velocidadeYOponente;
+
 let colidiu = false;
+
+//placar do jogo
+let meusPontos = 0;
+let pontosDoOponente = 0;
 
 function setup() {
   createCanvas(600, 400);
@@ -21,12 +30,22 @@ function setup() {
 
 function draw() {
   background(0);
+  //bolinha
   mostraBolinha()
   movimentaBolinha()
   verificaColisaoBorda()
-  mostraRaquete();
+  //minha raquete
+  mostraRaquete(xRaquete,yRaquete);
   movimentaMinhaRaquete()
-  verificaColisaoRaquete()
+  verificaColisaoRaquete(xRaquete,yRaquete)
+  //raquete oponente
+  mostraRaquete(xRaqueteOponente,yRaqueteOponente)
+  movimentaRaqueteOponente()
+  verificaColisaoRaquete(xRaqueteOponente,yRaqueteOponente)
+  //placar
+  incluiPlacar()
+  marcaPonto()
+
 }
 
 function mostraBolinha() {
@@ -47,9 +66,10 @@ function verificaColisaoBorda() {
   }
 }
 
-function mostraRaquete() {
-  rect(xRaquete, yRaquete, raqueteComprimento, raqueteAltura);
+function mostraRaquete(x,y) {
+  rect(x, y, raqueteComprimento, raqueteAltura);
 }
+
 
 function movimentaMinhaRaquete() {
   if (keyIsDown(UP_ARROW)) {
@@ -60,17 +80,29 @@ function movimentaMinhaRaquete() {
   }
 }
 
-function verificaColisaoRaquete() {
-  if (Xbolinha - raio < xRaquete + raqueteComprimento
-      && Ybolinha - raio < yRaquete + raqueteAltura
-      && Ybolinha + raio > yRaquete) {
+function movimentaRaqueteOponente() {
+  velocidadeYOponente = Ybolinha - yRaqueteOponente - raqueteComprimento / 2 - 30;
+  yRaqueteOponente += velocidadeYOponente
+}
+
+function verificaColisaoRaquete(x, y) {
+  colidiu = collideRectCircle(x, y, raqueteComprimento, raqueteAltura, Xbolinha, Ybolinha, raio);
+  if (colidiu){
       velocidadeXBolinha *= -1;
   }
 }
 
-function colisaoMinhaRaqueteBiblioteca() {
-  colidiu = collideRectCircle(xRaquete, yRaquete, raqueteComprimento, raqueteAltura, Xbolinha, Ybolinha, raio);
-  if (colidiu) {
-      velocidadeXBolinha *= -1;
+function incluiPlacar() {
+  fill(255);
+  text(meusPontos, 278, 26);
+  text(pontosDoOponente, 321, 26);
+}
+
+function marcaPonto() {
+  if (Xbolinha > 590) {
+      meusPontos += 1;
+  }
+  if (Xbolinha < 10) {
+      pontosDoOponente += 1;
   }
 }
