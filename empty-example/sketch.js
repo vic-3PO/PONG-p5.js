@@ -18,6 +18,8 @@ let xRaqueteOponente = 585;
 let yRaqueteOponente = 150;
 let velocidadeYOponente;
 
+let chanceDeErrar = 0;
+
 let colidiu = false;
 
 //placar do jogo
@@ -58,6 +60,8 @@ function draw() {
   incluiPlacar()
   marcaPonto()
 
+  bolinhaNaoFicaPresa()
+
 }
 
 function mostraBolinha() {
@@ -92,9 +96,24 @@ function movimentaMinhaRaquete() {
   }
 }
 
-function movimentaRaqueteOponente() {
-  velocidadeYOponente = Ybolinha - yRaqueteOponente - raqueteComprimento / 2 - 30;
-  yRaqueteOponente += velocidadeYOponente
+function movimentaRaqueteOponente(){
+  velocidadeYOponente = Ybolinha -yRaqueteOponente - raqueteComprimento / 2 - 30;
+  yRaqueteOponente += velocidadeYOponente + chanceDeErrar
+  calculaChanceDeErrar()
+}
+
+function calculaChanceDeErrar() {
+  if (pontosDoOponente >= meusPontos) {
+    chanceDeErrar += 1
+    if (chanceDeErrar >= 39){
+    chanceDeErrar = 40
+    }
+  } else {
+    chanceDeErrar -= 1
+    if (chanceDeErrar <= 35){
+    chanceDeErrar = 35
+    }
+  }
 }
 
 function verificaColisaoRaquete(x, y) {
@@ -127,5 +146,11 @@ function marcaPonto() {
   if (Xbolinha < 10) {
       pontosDoOponente += 1;
       ponto.play();
+  }
+}
+
+function bolinhaNaoFicaPresa(){
+  if (XBolinha - raio < 0){
+  XBolinha = 23
   }
 }
