@@ -60,7 +60,7 @@ function draw() {
   incluiPlacar()
   marcaPonto()
 
-  bolinhaNaoFicaPresa()
+  //bolinhaNaoFicaPresa()
 
 }
 
@@ -103,7 +103,7 @@ function movimentaRaqueteOponente(){
 }
 
 function calculaChanceDeErrar() {
-  if (pontosDoOponente >= meusPontos) {
+  if (pontosDoOponente >= meusPontos ) {
     chanceDeErrar += 1
     if (chanceDeErrar >= 39){
     chanceDeErrar = 40
